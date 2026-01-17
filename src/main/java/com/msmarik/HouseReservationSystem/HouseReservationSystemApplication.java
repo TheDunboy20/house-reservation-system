@@ -1,4 +1,4 @@
-package com.msmarik.house_reservation_system;
+package com.msmarik.HouseReservationSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
