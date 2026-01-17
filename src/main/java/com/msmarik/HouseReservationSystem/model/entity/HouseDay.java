@@ -3,7 +3,6 @@ package com.msmarik.HouseReservationSystem.model.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 public class HouseDay {
