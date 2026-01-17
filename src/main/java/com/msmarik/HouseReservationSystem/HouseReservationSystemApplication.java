@@ -9,5 +9,4 @@ public class HouseReservationSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HouseReservationSystemApplication.class, args);
 	}
-
 }
