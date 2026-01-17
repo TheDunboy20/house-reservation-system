@@ -1,6 +1,8 @@
 package com.msmarik.HouseReservationSystem.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,9 +10,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class House {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -18,7 +22,6 @@ public class House {
     private LocalDate availableFrom;
     private LocalDate availableTo;
     private Long priceInCents;
-    @Lob
     private byte[] image;
 
     @OneToMany(mappedBy = "house")
