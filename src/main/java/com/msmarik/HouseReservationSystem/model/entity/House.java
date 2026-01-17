@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,8 @@ public class House {
     private String name;
     private String description;
     private String address;
+    private LocalDate availableFrom;
+    private LocalDate availableTo;
     private Long priceInCents;
     @Lob
     private byte[] image;
