@@ -4,6 +4,7 @@ import com.msmarik.HouseReservationSystem.model.entity.House;
 import com.msmarik.HouseReservationSystem.service.HouseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,20 @@ public class HouseController {
         List<House> houseList = houseService.getHouses();
         log.info("Retrieved houses: {}", houseList);
         return houseList;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<House> getHouse(@PathVariable Long id){
+        return houseService.getHouse(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<House> updateHouse(@PathVariable Long id, @RequestBody House houseDetails){
+        return houseService.updateHouse(id, houseDetails)
+                .map(updatedHouse -> ResponseEntity.ok().body(updatedHouse))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

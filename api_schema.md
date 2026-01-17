@@ -1,8 +1,8 @@
-GET /houses/                                # Get all houses
-GET /houses/{id}                            # Get house by ID
-POST /houses                                # Create a new house
-PUT /houses/{id}                            # Update house by ID
-DELETE /houses/{id}                         # Delete house by ID
+GET /houses/                                # Get all houses [done]
+GET /houses/{id}                            # Get house by ID [done]
+POST /houses                                # Create a new house [done]
+PUT /houses/{id}                            # Update house by ID [done]
+DELETE /houses/{id}                         # Delete house by ID 
 GET /houses/{id}/house-days                 # Get house days by house ID
 
 GET     /reservations                        # List all (admin) or add filters                                                      
