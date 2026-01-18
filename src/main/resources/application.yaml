@@ -13,3 +13,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+        same-site: lax
