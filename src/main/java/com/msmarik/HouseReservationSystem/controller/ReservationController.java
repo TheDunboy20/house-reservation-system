@@ -34,4 +34,10 @@ public class ReservationController {
                 .map(updatedHouseDay -> ResponseEntity.ok().body(updatedHouseDay))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @DeleteMapping("{id}")
+    public ResponseEntity<HouseDayDTO> deleteReservation(@PathVariable Long id){
+        return houseDayService.deleteHouseDay(id)
+                .map(deletedHouseDay -> ResponseEntity.ok().body(deletedHouseDay))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

@@ -4,11 +4,10 @@ POST /houses                                # Create a new house [done]
 PUT /houses/{id}                            # Update house by ID [done]
 DELETE /houses/{id}                         # Delete house by ID [done]
 GET /houses/{id}/house-days                 # Get house days by house ID [done]
+PUT /houses/{id}/house-days                 # Update house days by house ID [done]
 
 GET     /reservations                        # List all (admin) or add filters [done]                                                
-GET     /reservations/{id}                   # Get reservation details [done]                                                           
-POST    /reservations                        # Create reservation [not needed]                                               
-PUT     /reservations/{id}                   # Update reservation [done]                                                                   
+GET     /reservations/{id}                   # Get reservation details [done]                                                            
 
 GET     /users/{userId}/reservations         # Get user's reservations
 

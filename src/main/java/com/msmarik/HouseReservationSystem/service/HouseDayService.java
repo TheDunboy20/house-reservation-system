@@ -57,6 +57,18 @@ public class HouseDayService {
                 .toList();
     }
 
+    public Optional<HouseDayDTO> deleteHouseDay(Long id) {
+        final Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(id, false);
+        if (originalHouseDay.isPresent()) {
+            final HouseDay houseDayToDelete = originalHouseDay.get();
+            houseDayToDelete.setDeleted(true);
+            HouseDay deletedHouseDay = houseDayRepository.save(houseDayToDelete);
+            return Optional.of(convertToDTO(deletedHouseDay));
+        } else {
+            return Optional.empty();
+        }
+    }
+
     private HouseDayDTO convertToDTO(HouseDay houseDay) {
         final HouseDayDTO houseDayDTO = new HouseDayDTO();
         houseDayDTO.setId(houseDay.getId());
