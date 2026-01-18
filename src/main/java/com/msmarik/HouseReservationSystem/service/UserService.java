@@ -35,6 +35,7 @@ public class UserService {
 
     private UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
         userDTO.setUsername(user.getName());
         return userDTO;
     }
