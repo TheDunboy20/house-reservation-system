@@ -29,9 +29,13 @@ public class SecurityConfig {
                         .permitAll()
                         .anyRequest().authenticated()
                 )
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint((req, res, authException) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-//                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((req, res, authException) -> {
+                            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            res.setContentType("application/json");
+                            res.getWriter().write("{\"error\":\"Unauthorized\"}");
+                        })
+                )
                 .formLogin(form -> form
                         .loginProcessingUrl("/auth/login")
                         .successHandler((req, res, auth) -> res.setStatus(200))
