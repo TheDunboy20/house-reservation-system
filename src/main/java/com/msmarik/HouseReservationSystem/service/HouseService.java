@@ -6,8 +6,6 @@ import com.msmarik.HouseReservationSystem.model.entity.House;
 import com.msmarik.HouseReservationSystem.model.entity.HouseDay;
 import com.msmarik.HouseReservationSystem.repository.HouseDayRepository;
 import com.msmarik.HouseReservationSystem.repository.HouseRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +20,6 @@ import java.util.stream.Collectors;
 public class HouseService {
     private final HouseRepository houseRepository;
     private final HouseDayRepository houseDayRepository;
-    private static final Logger log = LoggerFactory.getLogger(HouseService.class);
 
     public HouseService(HouseRepository houseRepository,
                         HouseDayRepository houseDayRepository) {
