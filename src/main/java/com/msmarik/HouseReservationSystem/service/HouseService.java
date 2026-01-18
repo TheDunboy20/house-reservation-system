@@ -25,15 +25,15 @@ public class HouseService {
     }
 
     public List<House> getHouses() {
-        return houseRepository.findAll();
+        return houseRepository.findAllByDeleted(false);
     }
 
     public Optional<House> getHouse(Long id) {
-        return houseRepository.findById(id);
+        return houseRepository.findByIdAndDeleted(id, false);
     }
 
     public Optional<House> updateHouse(Long id, House updatedHouse) {
-        Optional<House> originalHouse = houseRepository.findById(id);
+        Optional<House> originalHouse = houseRepository.findByIdAndDeleted(id, false);
         if (originalHouse.isPresent()) {
             House houseToUpdate = originalHouse.get();
             houseToUpdate.setName(updatedHouse.getName());
@@ -42,6 +42,21 @@ public class HouseService {
             houseToUpdate.setAvailableTo(updatedHouse.getAvailableTo());
 
             return Optional.of(houseRepository.save(houseToUpdate));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<House> deleteHouse(Long id) {
+        Optional<House> houseToDelete = houseRepository.findByIdAndDeleted(id, false);
+        if (houseToDelete.isPresent()) {
+            House house = houseToDelete.get();
+            house.setDeleted(true);
+            List<HouseDay> houseDays = houseDayRepository.findAllByHouseId(id);
+            houseDays.forEach(houseDay -> houseDay.setDeleted(true));
+            houseDayRepository.saveAll(houseDays);
+
+            return Optional.of(houseRepository.save(house));
         } else {
             return Optional.empty();
         }

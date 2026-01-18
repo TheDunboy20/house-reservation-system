@@ -40,6 +40,13 @@ public class HouseController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<House> deleteHouse(@PathVariable Long id){
+        return houseService.deleteHouse(id)
+                .map(deletedHouse -> ResponseEntity.ok().body(deletedHouse))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public House save(@RequestBody House house){
         log.info("Saving house: {}", house);

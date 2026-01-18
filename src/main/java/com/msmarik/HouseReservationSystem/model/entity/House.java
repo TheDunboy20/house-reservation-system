@@ -22,6 +22,7 @@ public class House {
     private LocalDate availableFrom;
     private LocalDate availableTo;
     private Long priceInCents;
+    private boolean deleted;
     private byte[] image;
 
     @OneToMany(mappedBy = "house")

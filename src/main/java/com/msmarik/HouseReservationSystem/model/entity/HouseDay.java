@@ -20,6 +20,7 @@ public class HouseDay {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
+    private boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
