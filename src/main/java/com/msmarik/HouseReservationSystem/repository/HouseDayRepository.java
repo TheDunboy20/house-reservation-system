@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface HouseDayRepository extends JpaRepository<HouseDay,Long> {
     List<HouseDay> findAllByHouseId(Long id);
+
+    List<HouseDay> findAllByHouseIdAndDeleted(Long houseId, boolean deleted);
 }
