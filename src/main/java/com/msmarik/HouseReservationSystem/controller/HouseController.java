@@ -3,6 +3,7 @@ package com.msmarik.HouseReservationSystem.controller;
 import com.msmarik.HouseReservationSystem.dto.HouseDTO;
 import com.msmarik.HouseReservationSystem.dto.HouseDayDTO;
 import com.msmarik.HouseReservationSystem.model.entity.House;
+import com.msmarik.HouseReservationSystem.service.HouseDayService;
 import com.msmarik.HouseReservationSystem.service.HouseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,11 @@ import java.util.List;
 public class HouseController {
     private static final Logger log = LoggerFactory.getLogger(HouseController.class);
     private final HouseService houseService;
+    private final HouseDayService houseDayService;
 
-    public HouseController(HouseService houseService) {
+    public HouseController(HouseService houseService, HouseDayService houseDayService) {
         this.houseService = houseService;
+        this.houseDayService = houseDayService;
     }
 
     @GetMapping
@@ -58,5 +61,12 @@ public class HouseController {
     @GetMapping("{id}/house-days")
     public List<HouseDayDTO> getHouseDays(@PathVariable Long id){
         return houseService.getHouseDays(id);
+    }
+
+    @DeleteMapping("{id}/house-days/{houseDayId}")
+    public ResponseEntity<HouseDayDTO> deleteHouseDay(@PathVariable Long id){
+        return houseDayService.deleteHouseDay(id)
+                .map(deletedHouseDay -> ResponseEntity.ok().body(deletedHouseDay))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

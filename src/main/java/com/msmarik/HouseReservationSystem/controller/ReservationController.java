@@ -5,8 +5,6 @@ import com.msmarik.HouseReservationSystem.service.HouseDayService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
@@ -16,28 +14,17 @@ public class ReservationController {
         this.houseDayService = houseDayService;
     }
 
-    @GetMapping
-    public List<HouseDayDTO> getReservations(){
-        return houseDayService.getAllHouseDays();
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<HouseDayDTO> getReservation(@PathVariable Long id){
-        return houseDayService.getHouseDay(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<HouseDayDTO> updateReservation(@RequestBody HouseDayDTO houseDayDTO, @PathVariable Long id){
-        return houseDayService.updateHouseDay(id, houseDayDTO)
+    @PostMapping("{id}")
+    public ResponseEntity<HouseDayDTO> createReservation(@RequestBody HouseDayDTO houseDayDTO, @PathVariable Long id){
+        return houseDayService.createReservation(id, houseDayDTO)
                 .map(updatedHouseDay -> ResponseEntity.ok().body(updatedHouseDay))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @DeleteMapping("{id}")
     public ResponseEntity<HouseDayDTO> deleteReservation(@PathVariable Long id){
-        return houseDayService.deleteHouseDay(id)
-                .map(deletedHouseDay -> ResponseEntity.ok().body(deletedHouseDay))
+        return houseDayService.deleteReservation(id)
+                .map(updatedHouseDay -> ResponseEntity.ok().body(updatedHouseDay))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
