@@ -25,6 +25,8 @@ public class House {
     private boolean deleted;
     private byte[] image;
 
+    // Store created by user
+
     @OneToMany(mappedBy = "house")
     private List<HouseDay> houseDayList;
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+// DTOs until persistence
 @Repository
 public interface HouseDayRepository extends JpaRepository<HouseDay,Long> {
     List<HouseDay> findAllByDeleted(boolean deleted);
