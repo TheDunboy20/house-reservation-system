@@ -6,10 +6,12 @@ A modern React application with glassmorphism UI design for managing house reser
 
 - User authentication (Register/Login)
 - View all available houses
-- Add new houses
-- Modern glassmorphism (liquid glass) design
+- Add new houses with total period pricing
+- **Bilingual support (English/Slovak)** with instant language switching
+- Modern glassmorphism (liquid glass) design with excellent readability
 - Responsive layout
 - Session-based authentication
+- Language preference persistence
 
 ## Tech Stack
 

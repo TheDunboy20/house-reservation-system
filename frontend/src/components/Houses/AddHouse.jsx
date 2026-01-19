@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { houseAPI } from '../../services/api';
+import { useLanguage } from '../../context/LanguageContext';
 import './Houses.css';
 
 const AddHouse = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -79,21 +81,21 @@ const AddHouse = () => {
       <div className="container">
         <div className="add-house-box glass fade-in">
           <div className="add-house-header">
-            <h1 className="add-house-title">Add New House</h1>
+            <h1 className="add-house-title">{t('addHouse.title')}</h1>
             <button className="glass-button" onClick={handleCancel}>
-              Cancel
+              {t('addHouse.cancel')}
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="add-house-form">
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">House Name *</label>
+                <label className="form-label">{t('addHouse.houseName')} {t('common.required')}</label>
                 <input
                   type="text"
                   name="name"
                   className="glass-input"
-                  placeholder="Beautiful Beach House"
+                  placeholder={t('addHouse.placeholderName')}
                   value={formData.name}
                   onChange={handleInputChange}
                   required
@@ -101,12 +103,12 @@ const AddHouse = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Price per Night (USD) *</label>
+                <label className="form-label">{t('addHouse.totalPrice')} {t('common.required')}</label>
                 <input
                   type="number"
                   name="price"
                   className="glass-input"
-                  placeholder="150.00"
+                  placeholder={t('addHouse.placeholderPrice')}
                   step="0.01"
                   min="0"
                   value={formData.price}
@@ -117,12 +119,12 @@ const AddHouse = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Address *</label>
+              <label className="form-label">{t('addHouse.address')} {t('common.required')}</label>
               <input
                 type="text"
                 name="address"
                 className="glass-input"
-                placeholder="123 Ocean Drive, Miami Beach, FL 33139"
+                placeholder={t('addHouse.placeholderAddress')}
                 value={formData.address}
                 onChange={handleInputChange}
                 required
@@ -130,11 +132,11 @@ const AddHouse = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Description *</label>
+              <label className="form-label">{t('addHouse.description')} {t('common.required')}</label>
               <textarea
                 name="description"
                 className="glass-input"
-                placeholder="Describe your house..."
+                placeholder={t('addHouse.placeholderDescription')}
                 rows="4"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -144,7 +146,7 @@ const AddHouse = () => {
 
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Available From *</label>
+                <label className="form-label">{t('addHouse.availableFrom')} {t('common.required')}</label>
                 <input
                   type="date"
                   name="availableFrom"
@@ -156,7 +158,7 @@ const AddHouse = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Available To *</label>
+                <label className="form-label">{t('addHouse.availableTo')} {t('common.required')}</label>
                 <input
                   type="date"
                   name="availableTo"
@@ -169,14 +171,14 @@ const AddHouse = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">House Image</label>
+              <label className="form-label">{t('addHouse.houseImage')}</label>
               <input
                 type="file"
                 accept="image/*"
                 className="glass-input file-input"
                 onChange={handleImageChange}
               />
-              <p className="form-hint">Optional: Upload a photo of your house</p>
+              <p className="form-hint">{t('addHouse.imageHint')}</p>
             </div>
 
             {error && <div className="error-message">{error}</div>}
@@ -187,14 +189,14 @@ const AddHouse = () => {
                 className="glass-button"
                 onClick={handleCancel}
               >
-                Cancel
+                {t('addHouse.cancel')}
               </button>
               <button
                 type="submit"
                 className="glass-button primary"
                 disabled={loading}
               >
-                {loading ? 'Creating...' : 'Create House'}
+                {loading ? t('addHouse.creating') : t('addHouse.create')}
               </button>
             </div>
           </form>

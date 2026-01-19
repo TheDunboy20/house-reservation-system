@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Auth.css';
 
 const Register = () => {
@@ -10,6 +12,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,12 +20,12 @@ const Register = () => {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('auth.passwordsDoNotMatch'));
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError(t('auth.passwordTooShort'));
       return;
     }
 
@@ -42,16 +45,20 @@ const Register = () => {
   return (
     <div className="auth-container fade-in">
       <div className="auth-box glass">
-        <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join us and start reserving houses</p>
+        <div className="auth-lang-switcher">
+          <LanguageSwitcher />
+        </div>
+
+        <h1 className="auth-title">{t('auth.createAccount')}</h1>
+        <p className="auth-subtitle">{t('auth.registerSubtitle')}</p>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label className="form-label">Username</label>
+            <label className="form-label">{t('auth.username')}</label>
             <input
               type="text"
               className="glass-input"
-              placeholder="Choose a username"
+              placeholder={t('auth.chooseUsername')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -59,11 +66,11 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">{t('auth.password')}</label>
             <input
               type="password"
               className="glass-input"
-              placeholder="Create a password"
+              placeholder={t('auth.createPassword')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -71,11 +78,11 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Confirm Password</label>
+            <label className="form-label">{t('auth.confirmPassword')}</label>
             <input
               type="password"
               className="glass-input"
-              placeholder="Confirm your password"
+              placeholder={t('auth.confirmYourPassword')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -89,17 +96,17 @@ const Register = () => {
             className="glass-button primary auth-button"
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? t('auth.creatingAccount') : t('auth.createAccountButton')}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Already have an account?</p>
+          <p>{t('auth.haveAccount')}</p>
           <button
             className="link-button"
             onClick={() => navigate('/login')}
           >
-            Sign in instead
+            {t('auth.signInInstead')}
           </button>
         </div>
       </div>

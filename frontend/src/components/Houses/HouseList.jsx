@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { houseAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import HouseCard from './HouseCard';
 import './Houses.css';
 
@@ -10,6 +12,7 @@ const HouseList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { logout } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,19 +53,20 @@ const HouseList = () => {
     <div className="houses-container">
       <header className="houses-header glass">
         <div className="header-content">
-          <h1 className="header-title">House Reservations</h1>
+          <h1 className="header-title">{t('houses.title')}</h1>
           <div className="header-actions">
+            <LanguageSwitcher />
             <button
               className="glass-button primary"
               onClick={handleAddHouse}
             >
-              + Add House
+              + {t('houses.addHouse')}
             </button>
             <button
               className="glass-button"
               onClick={handleLogout}
             >
-              Logout
+              {t('houses.logout')}
             </button>
           </div>
         </div>
@@ -72,7 +76,7 @@ const HouseList = () => {
         {loading && (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p className="loading-text">Loading houses...</p>
+            <p className="loading-text">{t('houses.loading')}</p>
           </div>
         )}
 
@@ -80,17 +84,17 @@ const HouseList = () => {
           <div className="error-container glass-card">
             <p className="error-text">{error}</p>
             <button className="glass-button" onClick={loadHouses}>
-              Retry
+              {t('houses.retry')}
             </button>
           </div>
         )}
 
         {!loading && !error && houses.length === 0 && (
           <div className="empty-state glass-card fade-in">
-            <h2>No houses available</h2>
-            <p>Be the first to add a house to the system!</p>
+            <h2>{t('houses.noHouses')}</h2>
+            <p>{t('houses.noHousesSubtitle')}</p>
             <button className="glass-button primary mt-3" onClick={handleAddHouse}>
-              Add Your First House
+              {t('houses.addFirstHouse')}
             </button>
           </div>
         )}

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import './Houses.css';
 
 const HouseCard = ({ house, onUpdate }) => {
+  const { t } = useLanguage();
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -61,11 +63,11 @@ const HouseCard = ({ house, onUpdate }) => {
 
         <div className="house-details">
           <div className="house-detail-item">
-            <span className="detail-label">Price per night</span>
+            <span className="detail-label">{t('houses.totalPrice')}</span>
             <span className="detail-value">{formatPrice(house.price)}</span>
           </div>
           <div className="house-detail-item">
-            <span className="detail-label">Available</span>
+            <span className="detail-label">{t('houses.available')}</span>
             <span className="detail-value">
               {formatDate(house.availableFrom)} - {formatDate(house.availableTo)}
             </span>
@@ -73,7 +75,7 @@ const HouseCard = ({ house, onUpdate }) => {
         </div>
 
         <button className="glass-button primary house-button">
-          View Details
+          {t('houses.viewDetails')}
         </button>
       </div>
     </div>
