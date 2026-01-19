@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import './Houses.css';
 
 const HouseCard = ({ house, onUpdate }) => {
+  const navigate = useNavigate();
   const { t } = useLanguage();
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -74,7 +76,10 @@ const HouseCard = ({ house, onUpdate }) => {
           </div>
         </div>
 
-        <button className="glass-button primary house-button">
+        <button
+          className="glass-button primary house-button"
+          onClick={() => navigate(`/houses/${house.id}`)}
+        >
           {t('houses.viewDetails')}
         </button>
       </div>

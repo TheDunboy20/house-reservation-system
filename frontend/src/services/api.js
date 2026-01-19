@@ -78,6 +78,11 @@ export const reservationAPI = {
     return response.data;
   },
 
+  create: async (houseDayId) => {
+    const response = await api.post(`/reservations/${houseDayId}`);
+    return response.data;
+  },
+
   update: async (id, reservationData) => {
     const response = await api.put(`/reservations/${id}`, reservationData);
     return response.data;
@@ -85,6 +90,11 @@ export const reservationAPI = {
 
   delete: async (id) => {
     const response = await api.delete(`/reservations/${id}`);
+    return response.data;
+  },
+
+  deleteByHouseDayId: async (houseDayId) => {
+    const response = await api.delete(`/reservations/${houseDayId}`);
     return response.data;
   },
 };

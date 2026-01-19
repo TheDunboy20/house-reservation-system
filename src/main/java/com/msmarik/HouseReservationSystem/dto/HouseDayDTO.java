@@ -11,5 +11,6 @@ public class HouseDayDTO {
     private Long id;
     private LocalDate date;
     private Long reservedByUserId;
+    private String reservedByUsername;
     private Long houseId;
 }

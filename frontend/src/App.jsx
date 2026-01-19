@@ -7,6 +7,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import HouseList from './components/Houses/HouseList';
 import AddHouse from './components/Houses/AddHouse';
+import HouseDetail from './components/Houses/HouseDetail';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AddHouse />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/houses/:id"
+              element={
+                <ProtectedRoute>
+                  <HouseDetail />
                 </ProtectedRoute>
               }
             />
