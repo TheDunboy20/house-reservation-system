@@ -41,49 +41,6 @@ public class HouseDayService {
         }
     }
 
-    public Optional<HouseDayDTO> createReservation(Long houseDayId, HouseDayDTO houseDayDTO) {
-        Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(houseDayId, false);
-        if (originalHouseDay.isPresent()) {
-            HouseDay houseDayToUpdate = originalHouseDay.get();
-            Long reservedByUserId = houseDayDTO.getReservedByUserId();
-
-            if (houseDayToUpdate.getReservedBy() != null) {
-                throw new IllegalStateException("This date is already reserved.");
-            }
-
-            if (reservedByUserId != null) {
-                User reservedByUser = userRepository.findById(reservedByUserId)
-                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + reservedByUserId));
-                houseDayToUpdate.setReservedBy(reservedByUser);
-            } else {
-                houseDayToUpdate.setReservedBy(null); // Clear the reservation if null
-            }
-
-            HouseDay savedHouseDay = houseDayRepository.save(houseDayToUpdate);
-            return Optional.of(convertToDTO(savedHouseDay));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public Optional<HouseDayDTO> deleteReservation(Long houseDayId) {
-        Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(houseDayId, false);
-        if (originalHouseDay.isPresent()) {
-            HouseDay houseDayToUpdate = originalHouseDay.get();
-
-            if (houseDayToUpdate.getReservedBy() == null) {
-                throw new IllegalStateException("This date is not reserved.");
-            }
-
-            houseDayToUpdate.setReservedBy(null);
-
-            HouseDay savedHouseDay = houseDayRepository.save(houseDayToUpdate);
-            return Optional.of(convertToDTO(savedHouseDay));
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public Optional<HouseDayDTO> deleteHouseDay(Long id) {
         final Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(id, false);
         if (originalHouseDay.isPresent()) {

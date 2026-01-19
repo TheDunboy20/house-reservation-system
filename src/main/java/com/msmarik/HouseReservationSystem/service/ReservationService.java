@@ -6,9 +6,11 @@ import com.msmarik.HouseReservationSystem.model.entity.User;
 import com.msmarik.HouseReservationSystem.repository.HouseDayRepository;
 import com.msmarik.HouseReservationSystem.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class ReservationService {
     private final HouseDayRepository houseDayRepository;
     private final UserRepository userRepository;
@@ -35,6 +37,24 @@ public class ReservationService {
             } else {
                 houseDayToUpdate.setReservedBy(null); // Clear the reservation if null
             }
+
+            HouseDay savedHouseDay = houseDayRepository.save(houseDayToUpdate);
+            return Optional.of(convertToDTO(savedHouseDay));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<HouseDayDTO> deleteReservation(Long houseDayId) {
+        Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(houseDayId, false);
+        if (originalHouseDay.isPresent()) {
+            HouseDay houseDayToUpdate = originalHouseDay.get();
+
+            if (houseDayToUpdate.getReservedBy() == null) {
+                throw new IllegalStateException("This date is not reserved.");
+            }
+
+            houseDayToUpdate.setReservedBy(null);
 
             HouseDay savedHouseDay = houseDayRepository.save(houseDayToUpdate);
             return Optional.of(convertToDTO(savedHouseDay));
