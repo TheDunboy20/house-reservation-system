@@ -20,6 +20,8 @@ const HouseDetail = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [reservationLoading, setReservationLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [dailyPrice, setDailyPrice] = useState(0);
+  const [paymentSummary, setPaymentSummary] = useState({ byUser: {}, remaining: 0 });
 
   useEffect(() => {
     loadHouseData();
@@ -44,6 +46,45 @@ const HouseDetail = () => {
         map.set(day.date, day);
       });
       setDaysMap(map);
+
+      // Calculate daily price
+      const totalDays = houseDaysData.length;
+      const pricePerDay = totalDays > 0 ? houseData.price / totalDays : 0;
+      setDailyPrice(pricePerDay);
+
+      // Calculate payment summary by user
+      const userPayments = {};
+      let reservedCount = 0;
+      houseDaysData.forEach(day => {
+        if (day.reservedByUserId !== null && day.reservedByUsername) {
+          const username = day.reservedByUsername;
+          if (!userPayments[username]) {
+            userPayments[username] = { days: 0, baseAmount: 0, additionalAmount: 0, totalAmount: 0 };
+          }
+          userPayments[username].days += 1;
+          userPayments[username].baseAmount += pricePerDay;
+          reservedCount += 1;
+        }
+      });
+
+      // Calculate unreserved days and split among users with reservations
+      const remainingDays = totalDays - reservedCount;
+      const remainingAmount = remainingDays * pricePerDay;
+      const userCount = Object.keys(userPayments).length;
+      const additionalPerUser = userCount > 0 ? remainingAmount / userCount : 0;
+
+      // Add additional amount to each user
+      Object.keys(userPayments).forEach(username => {
+        userPayments[username].additionalAmount = additionalPerUser;
+        userPayments[username].totalAmount = userPayments[username].baseAmount + additionalPerUser;
+      });
+
+      setPaymentSummary({
+        byUser: userPayments,
+        remaining: remainingAmount,
+        remainingDays,
+        userCount
+      });
 
     } catch (err) {
       console.error('Failed to load house data:', err);
@@ -212,6 +253,8 @@ const HouseDetail = () => {
 
       const className = `calendar-day ${status} ${isSelected ? 'selected' : ''}`;
 
+      const isInRange = status !== 'outside-range';
+
       dayCells.push(
         <div
           key={dateString}
@@ -224,6 +267,9 @@ const HouseDetail = () => {
           }
         >
           <span className="day-number">{day}</span>
+          {isInRange && dailyPrice > 0 && (
+            <span className="day-price">{dailyPrice.toFixed(2)}€</span>
+          )}
           {status === 'reserved-by-other' && dayData?.reservedByUsername && (
             <span className="reserved-by">{dayData.reservedByUsername}</span>
           )}
@@ -236,14 +282,6 @@ const HouseDetail = () => {
 
   const renderHouseInfo = () => {
     if (!house) return null;
-
-    const formatPrice = (price) => {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'EUR',
-        minimumFractionDigits: 2,
-      }).format(price);
-    };
 
     const formatDate = (dateString) => {
       return new Date(dateString).toLocaleDateString();
@@ -295,11 +333,16 @@ const HouseDetail = () => {
       return status === 'reserved-by-user';
     });
 
+    const selectedPrice = selectedDays.length * dailyPrice;
+
     return (
       <div className="reservation-controls">
         <div className="selection-info">
           <span className="selection-count">
             {selectedDays.length} {t('houseDetail.daysSelected')}
+          </span>
+          <span className="selection-price">
+            {formatPrice(selectedPrice)}
           </span>
         </div>
         <div className="action-buttons">
@@ -321,6 +364,76 @@ const HouseDetail = () => {
               {reservationLoading ? t('houseDetail.cancelling') : t('houseDetail.cancelSelected')}
             </button>
           )}
+        </div>
+      </div>
+    );
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+    }).format(price);
+  };
+
+  const renderPaymentSummary = () => {
+    const users = Object.entries(paymentSummary.byUser);
+    const hasUnreserved = paymentSummary.remainingDays > 0;
+
+    return (
+      <div className="payment-summary glass-panel">
+        <h3>{t('houseDetail.paymentSummary') || 'Payment Summary'}</h3>
+
+        <div className="payment-breakdown">
+          {users.length > 0 ? (
+            <div className="user-payments">
+              {users.map(([username, data]) => (
+                <div key={username} className="user-payment-card">
+                  <div className="user-payment-header">
+                    <span className="payment-user">{username}</span>
+                    <span className="payment-total">{formatPrice(data.totalAmount)}</span>
+                  </div>
+                  <div className="user-payment-details">
+                    <div className="payment-detail-row">
+                      <span className="detail-label">{t('houseDetail.forReservedDays') || 'For reserved days'}</span>
+                      <span className="detail-info">{data.days} {t('houseDetail.days') || 'days'}</span>
+                      <span className="detail-amount">{formatPrice(data.baseAmount)}</span>
+                    </div>
+                    {hasUnreserved && data.additionalAmount > 0 && (
+                      <div className="payment-detail-row additional">
+                        <span className="detail-label">{t('houseDetail.forUnreservedDays') || 'For unreserved days'}</span>
+                        <span className="detail-info">{t('houseDetail.splitBetween') || 'split between'} {paymentSummary.userCount}</span>
+                        <span className="detail-amount">+{formatPrice(data.additionalAmount)}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="no-reservations">{t('houseDetail.noReservationsYet') || 'No reservations yet'}</p>
+          )}
+
+          {hasUnreserved && (
+            <div className="remaining-payment">
+              <h4>{t('houseDetail.unreservedDays') || 'Unreserved days'}</h4>
+              <div className="payment-row remaining">
+                <span className="payment-days">{paymentSummary.remainingDays} {t('houseDetail.days') || 'days'}</span>
+                <span className="payment-amount">{formatPrice(paymentSummary.remaining)}</span>
+              </div>
+              {users.length > 0 && (
+                <p className="split-info">
+                  {t('houseDetail.splitInfo') || 'This amount is split equally between all users with reservations'}
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="total-row">
+            <span className="total-label">{t('houseDetail.totalPrice') || 'Total Price'}</span>
+            <span className="total-amount">{formatPrice(house?.price || 0)}</span>
+          </div>
         </div>
       </div>
     );
@@ -450,6 +563,8 @@ const HouseDetail = () => {
           {renderReservationControls()}
         </div>
       </div>
+
+      {renderPaymentSummary()}
     </div>
   );
 };

@@ -403,14 +403,29 @@
 }
 
 .selection-info {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .selection-count {
   font-size: 1.1rem;
   font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.selection-price {
+  font-size: 1.3rem;
+  font-weight: 700;
   color: var(--accent);
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  padding: 0.25rem 0.75rem;
+  background: rgba(168, 85, 247, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(168, 85, 247, 0.4);
 }
 
 .action-buttons {
@@ -499,5 +514,215 @@
 
   .calendar-day {
     border-radius: 6px;
+  }
+
+  .day-price {
+    font-size: 0.5rem;
+  }
+}
+
+/* Day Price */
+.day-price {
+  font-size: 0.6rem;
+  color: var(--accent);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Payment Summary */
+.payment-summary {
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.payment-summary h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.payment-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.user-payments h4,
+.remaining-payment h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 5, 25, 0.6);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.payment-row.remaining {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.payment-user {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  flex: 1;
+}
+
+.payment-days {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  margin: 0 1rem;
+}
+
+.payment-amount {
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* User Payment Card */
+.user-payment-card {
+  background: rgba(10, 5, 25, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.user-payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(168, 85, 247, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-payment-header .payment-user {
+  font-size: 1.1rem;
+}
+
+.payment-total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.user-payment-details {
+  padding: 0.75rem 1.25rem;
+}
+
+.payment-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.payment-detail-row:last-child {
+  border-bottom: none;
+}
+
+.payment-detail-row.additional {
+  color: rgba(255, 200, 100, 0.9);
+}
+
+.payment-detail-row.additional .detail-amount {
+  color: rgba(255, 200, 100, 0.9);
+}
+
+.detail-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  flex: 1;
+}
+
+.detail-info {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  margin: 0 1rem;
+}
+
+.detail-amount {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  min-width: 80px;
+  text-align: right;
+}
+
+.split-info {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.no-reservations {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(217, 70, 239, 0.2));
+  border-radius: 8px;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  margin-top: 0.5rem;
+}
+
+.total-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.total-amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 640px) {
+  .payment-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .payment-user {
+    flex-basis: 100%;
+  }
+
+  .payment-days {
+    margin: 0;
   }
 }
