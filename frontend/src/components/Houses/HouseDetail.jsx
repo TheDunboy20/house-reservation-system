@@ -299,7 +299,7 @@ const HouseDetail = () => {
 
         <div className="house-info-section">
           <h3>{t('houseDetail.pricePerPeriod')}</h3>
-          <p className="house-price">{formatPrice(house.totalPrice)}</p>
+          <p className="house-price">{formatPrice(house.price)}</p>
         </div>
 
         <div className="house-info-section">

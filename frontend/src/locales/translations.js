@@ -178,7 +178,7 @@ export const translations = {
       loading: 'Načítavanie podrobností domu...',
       errorLoading: 'Nepodarilo sa načítať podrobnosti domu',
       retry: 'Skúsiť znova',
-      pricePerPeriod: 'Cena za obdobie',
+      pricePerPeriod: 'Celková cena za obdobie',
       availabilityPeriod: 'Dostupnosť',
       description: 'Popis',
       calendar: 'Kalendár',
