@@ -33,6 +33,10 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
+    public Optional<UserDTO> findByUsername(String username) {
+        return userRepository.findByName(username).map(this::convertToDTO);
+    }
+
     private UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());

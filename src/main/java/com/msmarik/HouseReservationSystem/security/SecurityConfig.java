@@ -1,8 +1,11 @@
 package com.msmarik.HouseReservationSystem.security;
 
+import com.msmarik.HouseReservationSystem.dto.UserDTO;
+import com.msmarik.HouseReservationSystem.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final UserService userService;
+
+    public SecurityConfig(@Lazy UserService userService) {
+        this.userService = userService;
+    }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,7 +47,15 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/auth/login")
-                        .successHandler((req, res, auth) -> res.setStatus(200))
+                        .successHandler((req, res, auth) -> {
+                            String username = auth.getName();
+                            UserDTO userDTO = userService.findByUsername(username).orElse(null);
+                            res.setStatus(200);
+                            res.setContentType("application/json");
+                            if (userDTO != null) {
+                                res.getWriter().write("{\"id\":" + userDTO.getId() + ",\"username\":\"" + userDTO.getUsername() + "\"}");
+                            }
+                        })
                         .failureHandler((req, res, ex) -> res.sendError(401))
                 )
                 .logout(logout -> logout
