@@ -1,8 +1,10 @@
 package com.msmarik.HouseReservationSystem.controller;
 
 import com.msmarik.HouseReservationSystem.dto.HouseDayDTO;
+import com.msmarik.HouseReservationSystem.security.AppUserDetails;
 import com.msmarik.HouseReservationSystem.service.ReservationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +17,8 @@ public class ReservationController {
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<HouseDayDTO> createReservation(@RequestBody HouseDayDTO houseDayDTO, @PathVariable Long id){
-        return reservationService.createReservation(id, houseDayDTO)
+    public ResponseEntity<HouseDayDTO> createReservation(@PathVariable Long id, @AuthenticationPrincipal AppUserDetails userDetails) {
+        return reservationService.createReservation(id, userDetails.getId())
                 .map(updatedHouseDay -> ResponseEntity.ok().body(updatedHouseDay))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

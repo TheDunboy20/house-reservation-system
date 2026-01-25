@@ -20,19 +20,18 @@ public class ReservationService {
         this.userRepository = userRepository;
     }
 
-    public Optional<HouseDayDTO> createReservation(Long houseDayId, HouseDayDTO houseDayDTO) {
+    public Optional<HouseDayDTO> createReservation(Long houseDayId, Long userId) {
         Optional<HouseDay> originalHouseDay = houseDayRepository.findByIdAndDeleted(houseDayId, false);
         if (originalHouseDay.isPresent()) {
             HouseDay houseDayToUpdate = originalHouseDay.get();
-            Long reservedByUserId = houseDayDTO.getReservedByUserId();
 
             if (houseDayToUpdate.getReservedBy() != null) {
                 throw new IllegalStateException("This date is already reserved.");
             }
 
-            if (reservedByUserId != null) {
-                User reservedByUser = userRepository.findById(reservedByUserId)
-                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + reservedByUserId));
+            if (userId != null) {
+                User reservedByUser = userRepository.findById(userId)
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
                 houseDayToUpdate.setReservedBy(reservedByUser);
             } else {
                 houseDayToUpdate.setReservedBy(null); // Clear the reservation if null
