@@ -116,6 +116,7 @@ public class HouseService {
         houseDayDTO.setHouseId(houseDay.getHouse().getId());
         if (houseDay.getReservedBy() != null) {
             houseDayDTO.setReservedByUserId(houseDay.getReservedBy().getId());
+            houseDayDTO.setReservedByUsername(houseDay.getReservedBy().getName());
         }
         return houseDayDTO;
     }
